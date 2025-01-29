@@ -30,9 +30,8 @@ spec:
         - |
             mkdir -p ~/.ssh
             cp /mnt/github-app/id_rsa ~/.ssh/id_rsa
-            
-            chmod 600 ~/.ssh/id_rsa
             echo "StrictHostKeyChecking no" >> ~/.ssh/config
+            chmod -R 600 ~/.ssh
             cd /workdir
             git clone git@github.com:ts-idp-poc/test38-app.git
             ls -lh
