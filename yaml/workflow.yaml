@@ -1,11 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Workflow
+kind: WorkflowTemplate
 metadata:
-  name: hello-world-workflow
+  name: test38-wf-template
   namespace: test38
 spec:
-  serviceAccountName: run-workflow  # Specify the ServiceAccount
-  entrypoint: step-template
   volumes:
   - name: sshdir
     emptyDir: {}
