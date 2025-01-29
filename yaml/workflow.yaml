@@ -35,6 +35,12 @@ spec:
           cd /workdir
           git clone git@github.com:ts-idp-poc/test38-app.git
           ls -lh
+        volumeMounts:
+        - name: workdir
+          mountPath: /workdir
+        - name: github-app-key
+          mountPath: /mnt/github-app
+        
 
     
     
