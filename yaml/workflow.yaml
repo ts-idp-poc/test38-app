@@ -7,6 +7,8 @@ spec:
   serviceAccountName: run-workflow  # Specify the ServiceAccount
   entrypoint: step-template
   volumes:
+  - name: sshdir
+    emptyDir: {}
   - name: workdir
     persistentVolumeClaim:
       claimName: source-pvc
@@ -101,6 +103,8 @@ spec:
           mountPath: /workdir
         - name: github-infra-key
           mountPath: /mnt/github-infra
+        - name: sshdir
+          mountPath: /usr/local/openunison/.ssh
 
 
 
