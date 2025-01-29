@@ -5,10 +5,45 @@ metadata:
   namespace: test38
 spec:
   serviceAccountName: run-workflow  # Specify the ServiceAccount
-  entrypoint: hello-world
+  entrypoint: pull-source
+  volumes:
+  - name: workdir
+    emptyDir: {}
+  - name: cacert
+    configMap:
+      name: enterprise-ca
+  - name: github-app-key
+    secret:
+      secretName: app-key
+  - name: github-infra-key
+    secret:
+      secretName: cicd-key
+  - name: harbor-secret
+    secret:
+      secretName: cicd-secret
   templates:
-    - name: hello-world
-      container:
-        image: alpine:3.14
-        command: [sh, -c]
-        args: ["echo 'Hello, World!'"]
+    - name: pull-source
+      script:
+        image: alpine/git
+        command: ['sh','-c']
+        script: |-
+          mkdir -p ~/.ssh
+          cp /mnt/github-app/id_rsa ~/.ssh/id_rsa
+          
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          cd /workdir
+          git clone git@github.com:ts-idp-poc/test38-app.git
+          ls -lh
+
+    
+    
+    # - name: pull-source
+    #   script:
+    #     image: gcr.io/kaniko-project/executor:v1.14.0-debug
+    #     command: ['sh']
+    #     script: |
+    #       mkdir -p /kaniko/.docker
+    #       cp /mnt/harbor/.dockerconfiguration /kaniko/.docker/config.json
+    #       /kaniko/executor \
+    #         --dockerfile
