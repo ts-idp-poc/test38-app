@@ -34,7 +34,7 @@ spec:
             chmod -R 600 ~/.ssh
             cd /workdir
             git clone git@github.com:ts-idp-poc/test38-app.git
-            cd workdir/test38-app
+            cd /workdir/test38-app
             LATEST_COMMIT=$(git rev-parse --short HEAD)
             echo -n $LATEST_COMMIT > /workdir/tag.txt
             cat /workdir/tag.txt
