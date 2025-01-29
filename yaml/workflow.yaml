@@ -43,18 +43,25 @@ spec:
           mountPath: /workdir
         - name: github-app-key
           mountPath: /mnt/github-app
-
-    
-        
-
-    
-    
-    # - name: pull-source
-    #   script:
-    #     image: gcr.io/kaniko-project/executor:v1.14.0-debug
-    #     command: ['sh']
-    #     script: |
-    #       mkdir -p /kaniko/.docker
-    #       cp /mnt/harbor/.dockerconfiguration /kaniko/.docker/config.json
-    #       /kaniko/executor \
-    #         --dockerfile
+  
+    - name: build-container
+      container:
+        image: gcr.io/kaniko-project/executor:v1.14.0-debug
+        command: ['sh','-c']
+        args:
+        - |
+            mkdir -p /kaniko/.docker
+            cp /mnt/harbor/.dockerconfiguration /kaniko/.docker/config.json
+            cd /workdir/test38-app
+            /kaniko/executor \
+              --dockerfile source/Dockerfile \
+              --context source \
+              --destination harbor.192-168-2-19.nip.io/test38/mypython:$(cat /workdir/tag.txt)
+              --registry-certificate harbor.192-168-2-19.nip.io=$(cat /cacert/ca.crt)
+        volumeMounts:
+        - name: workdir
+          mountPath: /workdir
+        - name: harbor-secret
+          mountPath: /mnt/harbor
+        - name: cacert
+          mountPath: /cacert
