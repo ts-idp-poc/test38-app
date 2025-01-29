@@ -23,7 +23,7 @@ spec:
       secretName: cicd-secret
   templates:
     - name: pull-source
-      containers:
+      container:
         image: alpine/git
         command: ['sh','-c']
         args: 
