@@ -66,7 +66,7 @@ spec:
               --dockerfile source/Dockerfile \
               --context source \
               --destination harbor.192-168-2-19.nip.io/test38/mypython:$(cat /workdir/tag.txt) \
-              --registry-certificate harbor.192-168-2-19.nip.io=$(cat /cacert/ca.crt)
+              --registry-certificate harbor.192-168-2-19.nip.io=/cacert/ca.crt
         volumeMounts:
         - name: workdir
           mountPath: /workdir
