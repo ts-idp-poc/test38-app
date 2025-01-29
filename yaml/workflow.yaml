@@ -8,7 +8,8 @@ spec:
   entrypoint: step-template
   volumes:
   - name: workdir
-    emptyDir: {}
+    persistentVolumeClaim:
+      claimName: source-pvc
   - name: cacert
     configMap:
       name: enterprise-ca
@@ -40,6 +41,7 @@ spec:
             echo "StrictHostKeyChecking no" >> ~/.ssh/config
             chmod -R 600 ~/.ssh
             cd /workdir
+            rm -rf *
             git clone git@github.com:ts-idp-poc/test38-app.git
             cd /workdir/test38-app
             LATEST_COMMIT=$(git rev-parse --short HEAD)
@@ -58,7 +60,7 @@ spec:
         args:
         - |
             mkdir -p /kaniko/.docker
-            cp /mnt/harbor/.dockerconfiguration /kaniko/.docker/config.json
+            cp /mnt/harbor/.dockerconfigjson /kaniko/.docker/config.json
             cd /workdir/test38-app
             /kaniko/executor \
               --dockerfile source/Dockerfile \
