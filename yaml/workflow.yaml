@@ -29,8 +29,8 @@ spec:
       steps:
         - - name: pull-source
             template: pull-source
-        - - name: build-container
-            template: build-container
+        # - - name: build-container
+        #     template: build-container
         - - name: patch-infra
             template: patch-infra
 
@@ -87,6 +87,7 @@ spec:
         - |
             mkdir -p ~/.ssh
             cp /mnt/github-infra/id_rsa ~/.ssh/id_rsa
+            echo "StrictHostKeyChecking no" >> ~/.ssh/config
             chmod -R 600 ~/.ssh
             cd /workdir
             git clone git@github.com:ts-idp-poc/test38-infra.git
