@@ -23,18 +23,19 @@ spec:
       secretName: cicd-secret
   templates:
     - name: pull-source
-      script:
+      containers:
         image: alpine/git
         command: ['sh','-c']
-        script: |-
-          mkdir -p ~/.ssh
-          cp /mnt/github-app/id_rsa ~/.ssh/id_rsa
-          
-          chmod 600 ~/.ssh/id_rsa
-          echo "StrictHostKeyChecking no" >> ~/.ssh/config
-          cd /workdir
-          git clone git@github.com:ts-idp-poc/test38-app.git
-          ls -lh
+        args: 
+        - |
+            mkdir -p ~/.ssh
+            cp /mnt/github-app/id_rsa ~/.ssh/id_rsa
+            
+            chmod 600 ~/.ssh/id_rsa
+            echo "StrictHostKeyChecking no" >> ~/.ssh/config
+            cd /workdir
+            git clone git@github.com:ts-idp-poc/test38-app.git
+            ls -lh
         volumeMounts:
         - name: workdir
           mountPath: /workdir
